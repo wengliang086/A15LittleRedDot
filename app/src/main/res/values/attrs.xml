@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RedTipTextView">
+        <attr name="redTipsVisibility">
+            <enum name="invisible" value="0" />
+            <enum name="visible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="notButton">
+        <attr name="circleBgColor" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="circleSize" format="dimension" />
+    </declare-styleable>
+</resources>
