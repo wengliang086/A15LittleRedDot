@@ -160,12 +160,12 @@ public class BadgeView extends TextView {
 			
 			group.removeView(target);
 			group.addView(container, index, lp);
-			
+
 			container.addView(target);
-	
+
 			this.setVisibility(View.GONE);
 			container.addView(this);
-			
+
 			group.invalidate();
 			
 		}

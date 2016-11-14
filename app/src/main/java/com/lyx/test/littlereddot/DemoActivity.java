@@ -292,14 +292,7 @@ public class DemoActivity extends TabActivity {
             ViewHolder holder;
 
             if (convertView == null) {
-//				convertView = mInflater.inflate(
-//						android.R.layout.simple_list_item_2, null);
-
-                //����
-                //convertView = View.inflate(mContext, android.R.layout.simple_list_item_2, null);
-
-
-                convertView = View.inflate(mContext, android.R.layout.simple_list_item_2, parent);
+                convertView = View.inflate(mContext, android.R.layout.simple_list_item_2, null);
 
                 holder = new ViewHolder();
                 holder.text = (TextView) convertView
