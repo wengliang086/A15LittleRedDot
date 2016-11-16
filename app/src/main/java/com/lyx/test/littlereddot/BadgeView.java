@@ -2,7 +2,10 @@ package com.lyx.test.littlereddot;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
@@ -56,6 +59,8 @@ public class BadgeView extends TextView {
 	private ShapeDrawable badgeBg;
 	
 	private int targetTabIndex;
+
+	private String drawText;
 	
 	public BadgeView(Context context) {
 		this(context, (AttributeSet) null, android.R.attr.textViewStyle);
@@ -100,8 +105,40 @@ public class BadgeView extends TextView {
 		init(context, target, tabIndex);
 	}
 
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+		drawRedCircle(canvas);
+	}
+
+	Paint paint = new Paint();
+
+	private void drawRedCircle(Canvas canvas) {
+		if (target == null) {
+			return;
+		}
+		paint.setAntiAlias(true);
+		paint.setColor(badgeColor);
+		int redCircleSize = badgeMargin;
+//		drawText = getText().toString();
+		RectF rectF = new RectF(target.getWidth() - redCircleSize * (drawText.length() + 1), 0, target.getWidth(), redCircleSize * 2);
+		canvas.drawRoundRect(rectF, redCircleSize, redCircleSize, paint);
+
+		paint.setColor(DEFAULT_TEXT_COLOR);
+		paint.setTextSize(redCircleSize * 3 / 2);
+		paint.setTextAlign(Paint.Align.CENTER);
+		Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
+		int baseline = (int) ((rectF.bottom + rectF.top - fontMetrics.bottom - fontMetrics.top) / 2);
+		canvas.drawText(drawText, getWidth() - rectF.width() / 2 + 0.0f, baseline - 2, paint);
+	}
+
+	@Override
+	public void setText(CharSequence text, BufferType type) {
+		drawText = text.toString();
+		super.setText("", type);
+	}
+
 	private void init(Context context, View target, int tabIndex) {
-		
 		this.context = context;
 		this.target = target;
 		this.targetTabIndex = tabIndex;
@@ -139,7 +176,7 @@ public class BadgeView extends TextView {
 		LayoutParams lp = target.getLayoutParams();
 		ViewParent parent = target.getParent();
 		FrameLayout container = new FrameLayout(context);
-		
+
 		if (target instanceof TabWidget) {
 			
 			// set target to the relevant tab child container
@@ -164,7 +201,9 @@ public class BadgeView extends TextView {
 			container.addView(target);
 
 			this.setVisibility(View.GONE);
-			container.addView(this);
+//			LayoutParams lps = new LayoutParams(target.getWidth(), target.getHeight());
+			LayoutParams lps = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			container.addView(this, lps);
 
 			group.invalidate();
 			
@@ -253,14 +292,14 @@ public class BadgeView extends TextView {
 	
 	@SuppressWarnings("deprecation")
 	private void show(boolean animate, Animation anim) {
-		if (getBackground() == null) {
-			if (badgeBg == null) {
-				badgeBg = getDefaultBackground();
-			}
-			setBackgroundDrawable(badgeBg);
-		}
-		applyLayoutParams();
-		
+//		if (getBackground() == null) {
+//			if (badgeBg == null) {
+//				badgeBg = getDefaultBackground();
+//			}
+//			setBackgroundDrawable(badgeBg);
+//		}
+//		applyLayoutParams();
+
 		if (animate) {
 			this.startAnimation(anim);
 		}
